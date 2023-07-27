@@ -76,7 +76,7 @@ def main():
     desired_heading_deg = float(input("Enter target heading: "))
 
     # TODO: convert heading to radians
-    desired_heading = None
+    desired_heading = np.rad2deg(desired_heading_deg)
 
     pid = PID(0.5, 0.0, 10.0, 100)
 
@@ -86,6 +86,32 @@ def main():
         yaw = msg.yaw
         yaw_rate = msg.yawspeed
 
+        #if yaw < 0:
+            # yaw = yaw + math.pi*2
+        
+            #if abs(yaw - previousYaw) > math.pi:
+                #circles -=1
+            #else:
+                #circles += 1
+            #print(f"round!{yaw -previousView} yaw: {yaw} previousyaw: {previousYaw}")
+
+        #previousYaw = yaw
+
+    
+        error = desired_heading - yaw
+        print("Error:" , np.rad2deg(error))
+
+
+        if error > np.pi/2 and error < np.pi:
+            error = 1
+        elif error < 3*np.pi /2 and error > np.pi:
+            error = -1
+        else:
+            error = np.sin(error)
+        
+    
+
+        
         print("Heading: ", np.rad2deg(yaw))
 
         # calculate error

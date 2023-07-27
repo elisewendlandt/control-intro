@@ -44,6 +44,7 @@ class PID:
             derivative = error_derivative
 
         # TODO: Calculate the PID output
+    
 
     
         output = self.K_p*error + self.K_i*self.integral + self.K_d*derivative
@@ -62,12 +63,18 @@ class PID:
         """
 
         # TODO: Calculate and return the integral term
-        Ki =1.0
-        error_accumulator = 0
-        error_accumulator += error * dt # dt is the time since the last update
-        integral = Ki * error_accumulator
+         
+        self.integral += error *dt
+        if self.integral is not None:
+            self.integral = np.clip(self.integral, -self.integral_limit, self.integral_limit)
+            return self.integral
 
-        return integral
+        # Ki =1.0
+        # error_accumulator = 0
+        # error_accumulator += error * dt # dt is the time since the last update
+        # integral = Ki * error_accumulator
+
+        return self.integral
 
     def _get_derivative(self, error, dt):
         """Calculate the derivative term
@@ -79,6 +86,8 @@ class PID:
         """
 
         # TODO: Calculate and return the derivative term
+        #derivative = (error -self.last_error)/dt
+        #self.last_error = error
         previous_error = self.last_error
         Kd = 1.0
         derivative = Kd * (error - previous_error) / dt # dt is the time since the last update

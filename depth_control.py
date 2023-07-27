@@ -88,7 +88,7 @@ def main():
 
     # ask user for depth
     desired_depth = float(input("Enter target depth: "))
-    pid = PID(32, 0.5, 20.0, 100)
+    pid = PID(50, 0, -5, 0)
     #multiply error by 32 or 1st term --> bulk of the power 32%of the power 
     #integral shouldt be touched --> if off by a litte at the end then use integral
     #D should be big --> should slow down when close to target depth
